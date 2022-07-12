@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import { labels, options } from "./helpers";
+import { options } from "./helpers";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,7 +13,8 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-const ChartComponent = () => {
+const ChartComponent = (props: any) => {
+  const { prices, dates,name } = props;
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -25,34 +26,14 @@ const ChartComponent = () => {
     Legend
   );
 
-  //This function increases price by 5%.
-  const increasePercentage = () => {
-    let initialPrice: number = 1500;
-    let values: Array<any> = [];
-    console.log(labels);
-    labels.map((_item, index) => {
-      //This push the first value to array of prices without increasing value
-      if (index === 0) {
-        values.push(initialPrice);
-      }
-      //Here i increase the value and then push it to array
-      else {
-        let fivePercentOfValue: number = (10 / 100) * initialPrice;
-        initialPrice += fivePercentOfValue;
-        values.push(initialPrice?.toFixed(2));
-      }
-    });
-    return values;
-  };
-
   const data = {
-    labels,
+    labels: dates,
     datasets: [
       {
         fill: true,
-        label: "ETH Chart",
+        label: `Asset ID: ${name}`,
         borderColor: "#9945c0",
-        data: increasePercentage(),
+        data: prices,
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
     ],
